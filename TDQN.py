@@ -39,7 +39,7 @@ from tradingEnv import TradingEnv, technicalAnalysis
 ###############################################################################
 
 # Default parameters related to the DQN algorithm
-nn_model = 'LINEAR' # 'TRANSFORMER' or 'LINEAR'
+nn_model = 'TRANSFORMER' #or 'LINEAR'
 
 gamma = 0.4
 learningRate = 0.00001
@@ -858,7 +858,7 @@ class TDQN:
                     testingEnv.reset()
         
                 if (episode + 1) % episodeSavePeriod == 0:
-                    fileName = "".join(["Strategies/", "TRANSFORMER", "_", str(marketSymbol),  "_", trainingEnv.startingDate, "_", trainingEnv.endingDate, "_", str(episode)])
+                    fileName = "".join(["Strategies/", "TDQN", "_", str(marketSymbol),  "_", trainingEnv.startingDate, "_", trainingEnv.endingDate, "_", str(episode)])
                     self.saveModel(fileName)
 
         except KeyboardInterrupt:
@@ -872,7 +872,7 @@ class TDQN:
         fig = plt.figure()
         ax = fig.add_subplot(111, ylabel='Loss', xlabel='learning')
         ax.plot(loss_history)
-        plt.savefig(''.join(['Figures/', str(marketSymbol), '_TRANSFORMER_TrainingLoss', '.png']))
+        plt.savefig(''.join(['Figures/', str(marketSymbol), '_TDQN_TrainingLoss', '.png']))
         plt.close()
         
         # Assess the algorithm performance on the training trading environment
@@ -889,7 +889,7 @@ class TDQN:
             ax.plot(performanceTrain)
             ax.plot(performanceTest)
             ax.legend(["Training", "Testing"])
-            plt.savefig(''.join(['Figures/', str(marketSymbol), '_TRANSFORMER_TrainingTestingPerformance', '.png']))
+            plt.savefig(''.join(['Figures/', str(marketSymbol), '_TDQN_TrainingTestingPerformance', '.png']))
             plt.close()
             for i in range(len(trainingEnvList)):
                 self.plotTraining(score[i][:episode], marketSymbol)
@@ -897,7 +897,7 @@ class TDQN:
         # If required, print the strategy performance in a table
         if showPerformance:
             analyser = PerformanceEstimator(trainingEnv.data)
-            analyser.displayPerformance('TRANSFORMER')
+            analyser.displayPerformance('TDQN')
         
         # Closing of the tensorboard writer
         self.writer.close()
@@ -905,7 +905,7 @@ class TDQN:
         return trainingEnv
 
 
-    def testing(self, trainingEnv, testingEnv, rendering=False, showPerformance=False, showComment="TRANSFORMER"):
+    def testing(self, trainingEnv, testingEnv, rendering=False, showPerformance=False, showComment="TDQN"):
         """
         GOAL: Test the RL agent trading policy on a new trading environment
               in order to assess the trading strategy performance.
@@ -976,7 +976,7 @@ class TDQN:
         fig = plt.figure()
         ax1 = fig.add_subplot(111, ylabel='Total reward collected', xlabel='Episode')
         ax1.plot(score)
-        plt.savefig(''.join(['Figures/', str(marketSymbol), '_TRANSFORMER_TrainingResults', '.png']))
+        plt.savefig(''.join(['Figures/', str(marketSymbol), '_TDQN_TrainingResults', '.png']))
         plt.close()
 
     
@@ -996,7 +996,7 @@ class TDQN:
         ax1.plot(QValues0)
         ax1.plot(QValues1)
         ax1.legend(['Short', 'Long'])
-        plt.savefig(''.join(['Figures/', str(marketSymbol), '_TRANSFORMER_QValues', '.png']))
+        plt.savefig(''.join(['Figures/', str(marketSymbol), '_TDQN_QValues', '.png']))
         plt.close()
 
 
@@ -1142,7 +1142,7 @@ class TDQN:
             ax.plot([performanceTrain[e][i] for e in range(trainingParameters[0])])
             ax.plot([performanceTest[e][i] for e in range(trainingParameters[0])])
             ax.legend(["Training", "Testing"])
-            plt.savefig(''.join(['Figures/', str(marketSymbol), '_TRANSFORMER_TrainingTestingPerformance', str(i+1), '.png']))
+            plt.savefig(''.join(['Figures/', str(marketSymbol), '_TDQN_TrainingTestingPerformance', str(i+1), '.png']))
             plt.close()
 
         # Plot the expected performance of the intelligent DRL trading agent
@@ -1153,7 +1153,7 @@ class TDQN:
         ax.fill_between(range(len(expectedPerformanceTrain)), expectedPerformanceTrain-stdPerformanceTrain, expectedPerformanceTrain+stdPerformanceTrain, alpha=0.25)
         ax.fill_between(range(len(expectedPerformanceTest)), expectedPerformanceTest-stdPerformanceTest, expectedPerformanceTest+stdPerformanceTest, alpha=0.25)
         ax.legend(["Training", "Testing"])
-        plt.savefig(''.join(['Figures/', str(marketSymbol), '_TRANSFORMER_TrainingTestingExpectedPerformance', '.png']))
+        plt.savefig(''.join(['Figures/', str(marketSymbol), '_TDQN_TrainingTestingExpectedPerformance', '.png']))
         plt.close()
 
         # Closing of the tensorboard writer
@@ -1201,5 +1201,5 @@ class TDQN:
         plt.plot([self.epsilonValue(i) for i in range(10*epsilonDecay)])
         plt.xlabel("Iterations")
         plt.ylabel("Epsilon value")
-        plt.savefig(''.join(['Figures/', '_TRANSFORMER_EpsilonAnnealing', '.png']))
+        plt.savefig(''.join(['Figures/', '_TDQN_EpsilonAnnealing', '.png']))
         plt.close()
