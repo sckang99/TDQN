@@ -42,7 +42,7 @@ from extract_TensorBoard import extract_TensorBoard
 #endingDate = '2020-1-1'
 #splitingDate = '2018-1-1'
 
-startingDate = '2020-1-1'
+startingDate = '2015-1-1'
 endingDate = '2024-4-11'
 splitingDate = '2023-1-1'
 
@@ -64,7 +64,7 @@ money = 100000
 # Variables specifying the default general training parameters
 bounds = [1, 30]
 step = 1
-numberOfEpisodes = 1000
+numberOfEpisodes = 500
 
 # Dictionary listing the fictive stocks supported
 fictives = {
